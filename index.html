@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Equations</title>
+		<link rel="stylesheet" href="./style.css" />
+		<script src="./solver.js"></script>
+		<script src="./graphics.js"></script>
+	</head>
+	<body>
+		<header>
+			<h1>JS для решения уравнений</h1>
+			<p>Дихотомия и метод Ньютона</p>
+		</header>
+		<main>
+			<div class="solve-equation">
+				<p class="solve-equation__name">Уравнение для проверки методов решения</p>
+				<p class="solve-equation__equation">
+					-0.0125X<sup>3</sup> - 12.7X<sup>2</sup> + 51.3X + 117.5 = 0
+				</p>
+				<p class="solve-equation_description">
+					Это кубическое уравнение. Его можно решить и с помощью формулы Кардано, но это требует большого объема вычислений. Кроме того, существуют уравнения, для которых нет аналитических формул, дающих корни уравнения. Их можно решить лишь приближенно, используя численные методы. 
+				</p>
+			</div>
+			
+			<div class="solve-item" id="dichotomie">
+				<h1>Метод дихотомии</h1>
+			</div>
+			
+			<div class="solve-item" id="newton">
+				<h2>Метод Ньютона</h1>
+			</div>
+			
+			<div class="solve-hint">
+				<a href="https://planetcalc.ru/1122/" target="_blank" title="online-решатель">Онлайн-решатель алгебраических уравнений. Можно проверить полученные корни</a>
+			</div>
+			
+			<div class="solve-graphic">
+				<h2>График функции, для которой мы ищем нулевые значения</h2>
+				<p>
+					Конечно, можно проверить решение, вычислив корни по формуле Кардано, но такое решение не является самым наглядным, и не для всех уравнений вообще можно получить строгое аналитическое решение. График здесь намного нагляднее и доказательнее
+				</p>
+				
+				<canvas
+					class="solve-graphic__canvas"
+					width="750"
+					height="750">
+				</canvas>
+			</div>
+		</main>
+	</body>
+	<script>
+		window.addEventListener('DOMContentLoaded', () => {
+			const solve1 = dichotomie(-100, 100, testFunc, 1E-3)			
+			const solve2 = newtonSearch(-10, testFunc, 1E-3)
+			
+			const generatePoints = (func, x0, x1, N) => {
+				const result = {X: [], Y: []}
+				const dX = ( x1 - x0 ) / (N - 1)
+				let x = x0
+				for(let i = 0; i < N; i++ ) {
+					result.X.push(x)
+					result.Y.push(func(x))
+					
+					x += dX
+				}
+				
+				return result
+			}
+			
+			const testPoints = generatePoints(testFunc, -5, 5, 25)
+			
+			const testGrapher = new grapher()
+			testGrapher
+				.init( document.querySelector('canvas' ))
+				.drawGraphic(
+					testPoints.X,
+					testPoints.Y
+				)
+			
+			document
+				.getElementById('dichotomie')
+				.appendChild(outputTable(solve1, {"x0": 3, "x1": 3, "f_05": 4}))
+				
+			document
+				.getElementById('newton')
+				.appendChild(outputTable(solve2, {"x": 3, "f_x": 3, "df_dx": 2}))
+		})
+	</script>
+</html>
