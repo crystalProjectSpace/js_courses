@@ -5,6 +5,7 @@
 		<link rel="stylesheet" href="./style.css" />
 		<script src="./solver.js"></script>
 		<script src="./graphics.js"></script>
+		<script src="./arraysExtended.js"></script>
 	</head>
 	<body>
 		<header>
@@ -53,28 +54,17 @@
 			const solve1 = dichotomie(-100, 100, testFunc, 1E-3)			
 			const solve2 = newtonSearch(-10, testFunc, 1E-3)
 			
-			const generatePoints = (func, x0, x1, N) => {
-				const result = {X: [], Y: []}
-				const dX = ( x1 - x0 ) / (N - 1)
-				let x = x0
-				for(let i = 0; i < N; i++ ) {
-					result.X.push(x)
-					result.Y.push(func(x))
-					
-					x += dX
-				}
-				
-				return result
-			}
+			const range = ArrayExtended.getInterval(-5, 5, 25)
+			const funcValues = range.map(x => testFunc(x))
 			
-			const testPoints = generatePoints(testFunc, -5, 5, 25)
+			const testPoints = ArrayExtended.getInterval(testFunc, -5, 5, 25)
 			
 			const testGrapher = new grapher()
 			testGrapher
 				.init( document.querySelector('canvas' ))
 				.drawGraphic(
-					testPoints.X,
-					testPoints.Y
+					range,
+					funcValues
 				)
 			
 			document

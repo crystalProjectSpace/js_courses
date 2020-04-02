@@ -17,9 +17,10 @@ class grapher {
 			frequency: 2,
 		}
 		// количество элементарных линий между двумя точками графика
-		this.linePrecision = 25
 		this.scaleX = 1
 		this.scaleY = 1
+		this.dX = 0
+		this.dY = 0
 		this.graphMargin = 1
 	}
 	
@@ -32,8 +33,27 @@ class grapher {
 	
 	adjust (xMin, xMax, yMin, yMax) {
 		this.scaleX = this.handler.width / (xMax - xMin)
-		this.scaleY = this.handler.height / (yMax - yMin)
+		this.scaleY = -this.handler.height / (yMax - yMin)
+		this.dX = -xMin * this.scaleX
+		this.dY = this.handler.height - yMin * this.scaleY
+		
 		return this
+	}
+	
+	drawAxis(xMin, xMax, yMin, yMax) {
+		this.context.beginPath()
+		this.context.lineTo(xMin * this.scaleX + this.dX, this.dY)
+		this.context.lineTo(xMax * this.scaleX + this.dX, this.dY)
+		this.context.stroke()
+		
+		this.context.beginPath()
+		this.context.lineTo(this.dX, yMin * this.scaleY + this.dY)
+		this.context.lineTo(this.dX, yMax * this.scaleY + this.dY)
+		this.context.stroke()
+	}
+	
+	makeMarks(xMin, xMax, yMin, yMax) {
+		
 	}
 	
 	drawGraphic(xArr, yArr) {
@@ -55,38 +75,26 @@ class grapher {
 			return extrems
 		}, {yMin: yArr[0], yMax: yArr[0] })
 		
-		this.adjust(xMin, xMax, yMin, yMax)
+		this
+			.adjust(xMin, xMax, yMin, yMax)
+			.drawAxis(xMin, xMax, yMin, yMax)
 		
 		const iMax = xArr.length - 1
 		
 		this.context.strokeStyle = this.lineStyle.color
 		this.context.lineWidth = this.lineStyle.width
-		
-		const deltaX = xMin * this.scaleX
-		const deltaY = yMin * this.scaleY
-		
+				
 		this.context.beginPath()
 		xArr.forEach((x, i) => {
 			if(i < iMax) {
-				const x0 = x * this.scaleX - deltaX
-				const x1 = xArr[i + 1] * this.scaleX - deltaX
-				const y0 = this.handler.height - yArr[i] * this.scaleY + deltaY 
-				const y1 = this.handler.height - yArr[i + 1] * this.scaleY + deltaY 
+				const x0 = x * this.scaleX + this.dX
+				const x1 = xArr[i + 1] * this.scaleX + this.dX
+				const y0 = yArr[i] * this.scaleY + this.dY 
+				const y1 = yArr[i + 1] * this.scaleY + this.dY 
 				this.context.moveTo(x0, y0)
 				this.context.lineTo(x1, y1)
 			}
 		})
 		this.context.stroke()
-		
-		this.context.beginPath()
-		this.context.lineTo(xMin * this.scaleX - deltaX, this.handler.height + deltaY)
-		this.context.lineTo(xMax * this.scaleX - deltaX, this.handler.height + deltaY)
-		this.context.stroke()
-		
-		this.context.beginPath()
-		this.context.lineTo( - deltaX, this.handler.height + yMin)
-		this.context.lineTo( - deltaX, this.handler.height - yMax * this.scaleY + deltaY)
-		this.context.stroke()
-
 	}	
 }
