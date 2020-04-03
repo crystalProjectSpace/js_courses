@@ -6,6 +6,7 @@
 		<script src="./solver.js"></script>
 		<script src="./graphics.js"></script>
 		<script src="./arraysExtended.js"></script>
+		<script src="./mathExtended.js"></script>
 	</head>
 	<body>
 		<header>
@@ -51,13 +52,11 @@
 	</body>
 	<script>
 		window.addEventListener('DOMContentLoaded', () => {
-			const solve1 = dichotomie(-100, 100, testFunc, 1E-3)			
-			const solve2 = newtonSearch(-10, testFunc, 1E-3)
+			const solve1 = dichotomie(-1100, -1000, testFunc, 1E-3)			
+			const solve2 = newtonSearch(-1100, testFunc, 1E-3)
 			
-			const range = ArrayExtended.getInterval(-5, 5, 25)
-			const funcValues = range.map(x => testFunc(x))
-			
-			const testPoints = ArrayExtended.getInterval(testFunc, -5, 5, 25)
+			const range = ArrayExtended.getInterval(-1500, 1250, 50)
+			const funcValues = ArrayExtended.extendArray(range.map(x => testFunc(x)))
 			
 			const testGrapher = new grapher()
 			testGrapher
