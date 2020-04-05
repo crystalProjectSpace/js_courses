@@ -52,10 +52,10 @@
 	</body>
 	<script>
 		window.addEventListener('DOMContentLoaded', () => {
-			const solve1 = dichotomie(-1100, -1000, testFunc, 1E-3)			
-			const solve2 = newtonSearch(-1100, testFunc, 1E-3)
+			const solve1 = dichotomie(0, 10, testFunc, 1E-3)			
+			const solve2 = newtonSearch(-1110, testFunc, 1E-3)
 			
-			const range = ArrayExtended.getInterval(-1500, 1250, 50)
+			const range = ArrayExtended.getInterval(-10, 10, 50)
 			const funcValues = ArrayExtended.extendArray(range.map(x => testFunc(x)))
 			
 			const testGrapher = new grapher()
@@ -73,6 +73,11 @@
 			document
 				.getElementById('newton')
 				.appendChild(outputTable(solve2, {"x": 3, "f_x": 3, "df_dx": 2}))
+				
+			let testExtArr = new ArrayExtended()
+			const arr2 = [2, 1, 3]
+			testExtArr = arr2
+			console.log(testExtArr.getExtrems())
 		})
 	</script>
 </html>

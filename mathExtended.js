@@ -19,12 +19,10 @@ class MathExtended {
 				result /= 10
 			}
 		}
-		
-		const _r_10 = result / 10
-
-		while(result / 2 > _r_10) {
-			result /= 2
-		}			
+		const result_10 = result * 0.1
+		while( result > N0 + result_10 ) {
+			result -= result_10
+		}
 		
 		return result * Math.sign(N)
 	}

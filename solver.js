@@ -5,21 +5,22 @@ const testFunc = x => {
 	const x3 = x2 * x
 	return -0.0125 * x3 - 12.7 * x2 + 51.3 * x + 117.5
 }
-// поиск методом золотого сечения
+// поиск методом дихотомии
 const dichotomie = (x0_start, x1_start, func, eps) => {
 	let x0 = x0_start
 	let x1 = x1_start
 	let f0 = func(x0)
 	let f1 = func(x1)
+	let f_05 = func(0.5 * (x0 + x1)) 
 	let nStep = 0
 	const result = [{
 		x0,
 		x1,
-		f_05: func(0.5 * (x0 + x1)),
+		f_05,
 		nStep
 	}]
 	
-	while(Math.abs(x0 - x1) > eps) {
+	while(Math.abs(f0 - f1) > eps) {
 		const x_05 = 0.5 * (x0 + x1)
 		const f_05 = func(x_05)
 		if(Math.sign(f0) === Math.sign(f_05)) {
